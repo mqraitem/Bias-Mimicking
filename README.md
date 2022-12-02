@@ -1,6 +1,6 @@
 # Bias Mimicking: A simple sampling approach for Bias Mitigation 
 
-Official Pytorch implementation of Bias Mimicking: A simple sampling approach for Bias Mitigation
+Official Pytorch implementation of [Bias Mimicking: A simple sampling approach for Bias Mitigation](https://arxiv.org/pdf/2209.15605.pdf)
 
 ## Setup
 
