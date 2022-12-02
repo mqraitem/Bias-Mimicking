@@ -15,6 +15,7 @@ conda activate bias_mimicking
 * pytorch=1.9.0 torchvision==0.10.0 
 * scipy
 * tqdm 
+* scikit-learn
 
 ### Prepare dataset.
 
