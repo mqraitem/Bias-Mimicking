@@ -18,6 +18,7 @@ from debias.utils.logging import set_logging
 from debias.utils.utils import (AverageMeter, MultiDimAverageMeter, accuracy,
                                 save_model, set_seed, pretty_dict)
 
+from tqdm import tqdm
 
 def parse_option():
     parser = argparse.ArgumentParser()
@@ -53,7 +54,7 @@ def train(train_loader, model, criterion, optimizer):
     avg_loss = AverageMeter()
 
     train_iter = iter(train_loader)
-    for images, labels, _, biases, _, _ in train_iter:
+    for images, labels, _, biases, _, _ in tqdm(train_iter, ascii=True):
         bsz = labels.shape[0]
         labels, biases = labels.cuda(), biases.cuda()
 

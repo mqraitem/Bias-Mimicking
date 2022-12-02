@@ -9,6 +9,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from torch import nn, optim
+from tqdm import tqdm
 
 import sys
 sys.path.insert(1, './')
@@ -57,7 +58,7 @@ def train(train_loader, model, criterion, optimizer):
     avg_loss = AverageMeter()
 
     train_iter = iter(train_loader)
-    for images, labels, _, biases, _, _ in train_iter:
+    for images, labels, _, biases, _, _ in tqdm(train_iter, ascii=True):
         bsz = labels.shape[0]
         labels, biases = labels.cuda(), biases.cuda()
 
