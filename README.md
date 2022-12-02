@@ -4,21 +4,19 @@ Official Pytorch implementation of [Bias Mimicking: A simple sampling approach f
 
 ## Setup
 
-1. Set up conda environment  
+### Set up conda environment  
 ```
 conda create -n bias_mimicking python=3.8
 conda activate biasm-bias_mimicking
 ```
 
-2. Install packages
-
-Install the following packages: 
+### Install packages
 
 * pytorch=1.9.0 torchvision==0.10.0 
 * scipy
 * tqdm 
 
-3. Prepare dataset.
+### Prepare dataset.
 
 - CelebA  
 Download [CelebA](https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html) dataset under `data/celeba`
@@ -26,8 +24,9 @@ Download [CelebA](https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html) dataset und
 - UTKFace  
 Download [UTKFace](https://susanqq.github.io/UTKFace/) dataset under `data/utk_face`
 
-- CIFAR10 
-Download [CIFAR10](https://www.cs.toronto.edu/~kriz/cifar.html)
+- CIFAR10  
+Download [CIFAR10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset under `data/cifar10`
+
 
 As discussed in the paper, we train on subsampled versions of CelebA and UTKFace. The information required to reproduce the the splits are in data/[DATASET]/pickles. The code will automatically load the right splits. 
 
@@ -39,3 +38,10 @@ From the main directory, run:
 python train_[DATASET]/train_[DATASET]_[METHOD].py --seed [SEED]
 ```
 
+To train out method on celeba, run: 
+
+```
+python train_celeba/train_celeba_bm.py --mode [none/us/uw/os] --seed [SEED]
+```
+
+where mode refers to whether the distribution if left as is/undersampled/upweighted/oversampled when training the predictive linear layer. 
