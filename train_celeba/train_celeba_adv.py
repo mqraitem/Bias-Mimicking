@@ -24,7 +24,7 @@ def parse_option():
     parser = argparse.ArgumentParser()
     parser.add_argument('--exp_name', type=str, default='test')
     parser.add_argument('--gpu', type=int, default=0)
-    parser.add_argument('--task', type=str, default='race')
+    parser.add_argument('--task', type=str, default='blonde')
 
     parser.add_argument('--epochs', type=int, default=20)
     parser.add_argument('--seed', type=int, default=1)
@@ -33,7 +33,6 @@ def parse_option():
     parser.add_argument('--lr', type=float, default=1e-3)
     parser.add_argument('--training_ratio', type=float, default=2)
     parser.add_argument('--alpha', type=float, default=1)
-    parser.add_argument('--rb', type=int, default=0)
 
     opt = parser.parse_args()
 
