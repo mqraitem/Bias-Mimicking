@@ -38,10 +38,10 @@ From the main directory, run:
 python train_[DATASET]/train_[DATASET]_[METHOD].py --seed [SEED]
 ```
 
-To train out method on celeba, run: 
+To train our method on celeba, run: 
 
 ```
 python train_celeba/train_celeba_bm.py --mode [none/us/uw/os] --seed [SEED]
 ```
 
-where mode refers to whether the distribution if left as is/undersampled/upweighted/oversampled when training the predictive linear layer. 
+where mode refers to whether the distribution is left as is/undersampled/upweighted/oversampled when training the predictive linear layer. 
