@@ -50,7 +50,7 @@ def train(train_loader, model, criterion, optimizer):
 
     train_iter = iter(train_loader)
     total_steps = len(train_iter)
-    for idx, (images, _, biases, _, labels, _, _) in enumerate(train_iter):
+    for images, labels, _, biases, _, _ in train_iter:
         bsz = labels.shape[0]
         labels, biases = labels.cuda(), biases.cuda()
 
@@ -75,7 +75,7 @@ def validate(val_loader, model):
     attrwise_acc_meter = MultiDimAverageMeter(dims=(2, 2))
 
     with torch.no_grad():
-        for idx, (images, _, biases, _, labels, _, _) in enumerate(val_loader):
+        for images, labels, _, biases, _, _ in val_loader:
             images, labels, biases = images.cuda(), labels.cuda(), biases.cuda()
             bsz = labels.shape[0]
 
