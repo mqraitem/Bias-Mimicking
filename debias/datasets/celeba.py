@@ -260,7 +260,7 @@ def get_celeba(root, batch_size, target_attr='blonde', split='train', num_worker
         shuffle=True if sampler is None else False,
         sampler=sampler,
         num_workers=num_workers,
-        pin_memory=True,
+        pin_memory=False,
         drop_last=two_crop
     )
     return dataloader

@@ -29,7 +29,6 @@ def parse_option():
 
     parser.add_argument('--epochs', type=int, default=20)
     parser.add_argument('--seed', type=int, default=1)
-    parser.add_argument('--rb', type=int, default=0)
 
     parser.add_argument('--bs', type=int, default=128, help='batch_size')
     parser.add_argument('--lr', type=float, default=1e-3)

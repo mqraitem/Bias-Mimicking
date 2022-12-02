@@ -9,7 +9,6 @@ import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
 import torch.optim as optim
-from sklearn.metrics import average_precision_score
 
 
 class MultiDimAverageMeter(object):
@@ -99,16 +98,6 @@ def accuracy(output, target, topk=(1,)):
             correct_k = correct[:k].reshape(-1).float().sum(0, keepdim=True)
             res.append(correct_k.mul_(100.0 / batch_size))
         return res
-
-def compute_weighted_AP(target, predict_prob, class_weight_list):
-    per_class_AP = []
-    for i in range(target.shape[1] - 1):
-        class_weight = target[:, i]*class_weight_list[i] \
-                       + (1-target[:, i])*np.ones(class_weight_list[i].shape)
-        per_class_AP.append(average_precision_score(target[:, i], predict_prob[:, i], 
-                                sample_weight=class_weight))
-        
-    return per_class_AP
 
 def compute_class_weight(target):
     domain_label = target[:, -1]

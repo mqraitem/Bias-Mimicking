@@ -250,7 +250,7 @@ def get_cifar10(root, split, num_workers=2, batch_size=128,
         shuffle=True if sampler is None and split == 'train' else False,
         sampler=sampler,
         num_workers=num_workers,
-        pin_memory=True, 
+        pin_memory=False, 
         drop_last=two_crop)
 
     return dataloader 

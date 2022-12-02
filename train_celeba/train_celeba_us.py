@@ -32,7 +32,6 @@ def parse_option():
 
     parser.add_argument('--bs', type=int, default=128, help='batch_size')
     parser.add_argument('--lr', type=float, default=1e-3)
-    parser.add_argument('--rb', type=int, default=0)
 
     opt = parser.parse_args()
 
@@ -129,7 +128,6 @@ def main():
         target_attr=opt.task,
         split='train',
         aug=False, 
-        resample_blonde=opt.rb,
         under_sample='ce')
 
     val_loaders = {}
@@ -138,8 +136,7 @@ def main():
         batch_size=256,
         target_attr=opt.task,
         split='train_valid',
-        aug=False, 
-        resample_blonde=opt.rb)
+        aug=False)
 
     val_loaders['test'] = get_celeba(
         root,
