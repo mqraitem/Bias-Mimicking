@@ -163,8 +163,8 @@ def main():
 
             eye_tsr = train_loader.dataset.get_eye_tsr() 
 
-            stats[f'{key}/acc_skew'] = valid_attrwise_accs[eye_tsr == 0.0].mean().item() * 100
-            stats[f'{key}/acc_align'] = valid_attrwise_accs[eye_tsr > 0.0].mean().item() * 100
+            stats[f'{key}/acc_skew'] = valid_attrwise_accs[eye_tsr > 0.0].mean().item() * 100
+            stats[f'{key}/acc_align'] = valid_attrwise_accs[eye_tsr == 0.0].mean().item() * 100
 
         logging.info(f'[{epoch} / {opt.epochs}] {valid_attrwise_accs} {stats}')
         for tag in val_loaders.keys():

@@ -8,6 +8,7 @@ from pathlib import Path
 import numpy as np
 import torch
 from torch import nn
+from tqdm import tqdm
 
 import sys
 sys.path.insert(1, './')
@@ -61,12 +62,12 @@ def train(train_loader, cont_train_loader, model, criterion, optimizer, epoch, o
 
     train_iter = iter(train_loader)
     cont_train_iter = iter(cont_train_loader)
-    for idx, (images, _, biases, _, labels, _, _) in enumerate(train_iter):
+    for images, labels, _, biases, _, _ in tqdm(train_iter, ascii=True):
         try:
-            cont_images, _, cont_biases, _ , cont_labels, _, _ = next(cont_train_iter)
+            cont_images, cont_labels, _, cont_biases, _ , _ = next(cont_train_iter)
         except:
             cont_train_iter = iter(cont_train_loader)
-            cont_images, _, cont_biases, _, cont_labels, _, _ = next(cont_train_iter)
+            cont_images, cont_labels, _, cont_biases, _ , _ = next(cont_train_iter)
 
         bsz = labels.shape[0]
         cont_bsz = cont_labels.shape[0]
@@ -105,7 +106,7 @@ def validate(val_loader, model):
     attrwise_acc_meter = MultiDimAverageMeter(dims=(2, 2))
 
     with torch.no_grad():
-        for idx, (images, _, biases, _, labels, _, _) in enumerate(val_loader):
+        for images, labels, _, biases, _, _ in val_loader:
             images, labels, biases = images.cuda(), labels.cuda(), biases.cuda()
             bsz = labels.shape[0]
 
@@ -205,8 +206,8 @@ def main():
 
             eye_tsr = train_loader.dataset.get_eye_tsr() 
 
-            stats[f'{key}/acc_skew'] = valid_attrwise_accs[eye_tsr == 0.0].mean().item() * 100
-            stats[f'{key}/acc_align'] = valid_attrwise_accs[eye_tsr > 0.0].mean().item() * 100
+            stats[f'{key}/acc_skew'] = valid_attrwise_accs[eye_tsr > 0.0].mean().item() * 100
+            stats[f'{key}/acc_align'] = valid_attrwise_accs[eye_tsr == 0.0].mean().item() * 100
 
         logging.info(f'[{epoch} / {opt.epochs}] {valid_attrwise_accs} {stats}')
         for tag in val_loaders.keys():
