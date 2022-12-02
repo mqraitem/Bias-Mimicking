@@ -7,7 +7,7 @@ Official Pytorch implementation of [Bias Mimicking: A simple sampling approach f
 ### Set up conda environment  
 ```
 conda create -n bias_mimicking python=3.8
-conda activate biasm-bias_mimicking
+conda activate bias_mimicking
 ```
 
 ### Install packages
