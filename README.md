@@ -12,7 +12,7 @@ conda activate bias_mimicking
 
 ### Install packages
 
-* pytorch=1.9.0 torchvision==0.10.0 
+* pytorch=1.10.1 
 * scipy
 * tqdm 
 * scikit-learn
