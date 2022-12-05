@@ -1,6 +1,6 @@
 # Bias Mimicking: A simple sampling approach for Bias Mitigation 
 
-Official Pytorch implementation of [Bias Mimicking: A simple sampling approach for Bias Mitigation](https://arxiv.org/pdf/2209.15605.pdf)
+Official Pytorch implementation of [Bias Mimicking: A simple sampling approach for Bias Mitigation](https://arxiv.org/pdf/2209.15605.pdf). 
 
 ## Setup
 
@@ -46,3 +46,7 @@ python train_celeba/train_celeba_bm.py --mode [none/us/uw/os] --seed [SEED]
 ```
 
 where mode refers to whether the distribution is left as is/undersampled/upweighted/oversampled when training the predictive linear layer. 
+
+## Acknowledgements
+
+The code for non sampling methods builds on [this work](https://github.com/grayhong/bias-contrastive-learning). Furthermore, the code for GroupDRO is obtained from [this work](https://github.com/kohpangwei/group_DRO)
