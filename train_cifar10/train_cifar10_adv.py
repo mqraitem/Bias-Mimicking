@@ -160,7 +160,7 @@ def main():
 
     model, criterion = set_model()
 
-    decay_epochs = [50, 100, 150]
+    decay_epochs = [opt.epochs//4, opt.epochs//2, opt.epochs//1.333]
 
     optimizer_base = torch.optim.Adam(model[0].parameters(), lr=opt.lr, weight_decay=1e-4)
     optimizer_class = torch.optim.Adam(model[1].parameters(), lr=opt.lr, weight_decay=1e-4)

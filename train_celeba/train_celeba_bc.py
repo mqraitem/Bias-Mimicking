@@ -126,21 +126,6 @@ def validate(val_loader, model):
 def main():
     opt = parse_option()
     
-    if opt.task == "makeup":
-        opt.epochs = 40
-        opt.ratio = 50
-    elif opt.task == "black":
-        opt.epochs = 10
-        opt.ratio = 30
-    elif opt.task == "blonde":
-        opt.epochs = 10
-        opt.ratio = 30
-    elif opt.task == 'smiling': 
-        opt.epochs = 10
-        opt.ratio = 30
-    else:
-        raise AttributeError()
-
     exp_name = f'bc-bb{opt.bb}-celeba_{opt.task}-{opt.exp_name}-lr{opt.lr}-bs{opt.bs}-cbs{opt.cbs}-w{opt.weight}-ratio{opt.ratio}-aug{opt.aug}-seed{opt.seed}'
     opt.exp_name = exp_name
 
@@ -231,19 +216,12 @@ def main():
                 best_epochs[tag] = epoch
                 best_stats[tag] = pretty_dict(**{f'best_{tag}_{k}': v for k, v in stats.items()})
 
-                save_file = save_path / 'checkpoints' / f'best_{tag}.pth'
-                save_model(model, optimizer, opt, epoch, save_file)
-
             logging.info(
                 f'[{epoch} / {opt.epochs}] best {tag} accuracy: {best_accs[tag]:.3f} at epoch {best_epochs[tag]} \n best_stats: {best_stats[tag]}')
 
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     logging.info(f'Total training time: {total_time_str}')
-
-    save_file = save_path / 'checkpoints' / f'last.pth'
-    save_model(model, optimizer, opt, opt.epochs, save_file)
-
 
 if __name__ == '__main__':
     main()

@@ -16,9 +16,15 @@ class BiasedCelebASplit(SamplingDataset):
         self.transform = transform
         self.target_attr = target_attr
         
+        split_dict = {
+            'train': 'train',
+            'train_valid': 'valid',
+            'valid': 'test'
+        }
+
         self.celeba = CelebA(
             root=root,
-            split="train" if split == "train_valid" else split,
+            split=split_dict[split],
             target_type="attr",
             transform=transform,
         )
@@ -27,7 +33,7 @@ class BiasedCelebASplit(SamplingDataset):
         
         if target_attr == 'blonde':
             self.target_idx = 9
-            if split in ['train', 'train_valid'] :
+            if split in ['train'] :
                 save_path = Path(root) / 'pickles' / 'blonde'
                 if save_path.is_dir():
                     print(f'use existing blonde indices from {save_path}')
@@ -50,7 +56,7 @@ class BiasedCelebASplit(SamplingDataset):
         
         elif target_attr == 'black':
             self.target_idx = 8
-            if split in ['train', 'train_valid'] :
+            if split in ['train'] :
                 save_path = Path(root) / 'pickles' / 'black'
                 if save_path.is_dir():
                     print(f'use existing black indices from {save_path}')
@@ -67,7 +73,7 @@ class BiasedCelebASplit(SamplingDataset):
 
         elif target_attr == 'smiling':
             self.target_idx = 31
-            if split in ['train', 'train_valid'] :
+            if split in ['train'] :
                 save_path = Path(root) / 'pickles' / 'smiling'
                 if save_path.is_dir():
                     print(f'use existing smiling indices from {save_path}')
@@ -85,20 +91,20 @@ class BiasedCelebASplit(SamplingDataset):
         else:
             raise AttributeError
             
-        if split in ['train', 'train_valid']:
+        # if split in ['train', 'train_valid']:
             
-            rand_indices = torch.randperm(len(self.indices))
+        #     rand_indices = torch.randperm(len(self.indices))
             
-            num_total = len(rand_indices)
-            num_train = int(0.8 * num_total)
+        #     num_total = len(rand_indices)
+        #     num_train = int(0.8 * num_total)
             
-            if split == 'train':
-                indices = rand_indices[:num_train]
-            elif split == 'train_valid':
-                indices = rand_indices[num_train:]
+        #     if split == 'train':
+        #         indices = rand_indices[:num_train]
+        #     elif split == 'train_valid':
+        #         indices = rand_indices[num_train:]
             
-            self.indices = self.indices[indices]
-            self.attr = self.attr[indices]
+        #     self.indices = self.indices[indices]
+        #     self.attr = self.attr[indices]
         
         
         self.targets = self.attr[:, self.target_idx]

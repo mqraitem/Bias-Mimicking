@@ -30,7 +30,6 @@ def parse_option():
 
     parser.add_argument('--bs', type=int, default=128, help='batch_size')
     parser.add_argument('--lr', type=float, default=1e-3)
-    parser.add_argument('--er', type=int, default=0)
 
     opt = parser.parse_args()
 
@@ -115,7 +114,7 @@ def main():
         bias_attr=opt.task,
         split='train',
         aug=False, 
-        under_sample = 'os')
+        sampling = 'os')
     
     val_loaders = {}
     val_loaders['valid'] = get_utk_face(
@@ -173,20 +172,12 @@ def main():
                 best_epochs[tag] = epoch
                 best_stats[tag] = pretty_dict(**{f'best_{tag}_{k}': v for k, v in stats.items()})
 
-                save_file = save_path / 'checkpoints' / f'best_{tag}.pth'
-                save_model(model, optimizer, opt, epoch, save_file)
             logging.info(
                 f'[{epoch} / {opt.epochs}] best {tag} accuracy: {best_accs[tag]:.3f} at epoch {best_epochs[tag]} \n best_stats: {best_stats[tag]}')
-
-        if opt.er:   
-            train_loader.dataset.under_sample_ce() 
     
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     logging.info(f'Total training time: {total_time_str}')
-
-    save_file = save_path / 'checkpoints' / f'last.pth'
-    save_model(model, optimizer, opt, opt.epochs, save_file)
 
 
 if __name__ == '__main__':

@@ -26,6 +26,7 @@ def parse_option():
     parser.add_argument('--task', type=str, default='race')
 
     parser.add_argument('--epochs', type=int, default=20)
+    parser.add_argument('--epochs_extra', type=int, default=20)
     parser.add_argument('--seed', type=int, default=1)
 
     parser.add_argument('--bs', type=int, default=128, help='batch_size')
@@ -116,7 +117,7 @@ def main():
         bias_attr=opt.task,
         split='train',
         aug=False, 
-        under_sample = 'ce')
+        sampling = 'ce')
     
     val_loaders = {}
     val_loaders['valid'] = get_utk_face(
@@ -134,7 +135,6 @@ def main():
         aug=False)
 
     model, criterion = set_model()
-
     decay_epochs = [opt.epochs // 3, opt.epochs * 2 // 3]
 
     optimizer = torch.optim.Adam(model.parameters(), lr=opt.lr, weight_decay=1e-4)
@@ -149,7 +149,9 @@ def main():
     start_time = time.time()
     for epoch in range(1, opt.epochs + 1):
         logging.info(f'[{epoch} / {opt.epochs}] Learning rate: {scheduler.get_last_lr()[0]}')
-        loss = train(train_loader, model, criterion, optimizer)
+
+        for _ in range(opt.epochs_extra): 
+            loss = train(train_loader, model, criterion, optimizer)
         logging.info(f'[{epoch} / {opt.epochs}] Loss: {loss:.4f}')
 
         scheduler.step()
@@ -174,8 +176,6 @@ def main():
                 best_epochs[tag] = epoch
                 best_stats[tag] = pretty_dict(**{f'best_{tag}_{k}': v for k, v in stats.items()})
 
-                save_file = save_path / 'checkpoints' / f'best_{tag}.pth'
-                save_model(model, optimizer, opt, epoch, save_file)
             logging.info(
                 f'[{epoch} / {opt.epochs}] best {tag} accuracy: {best_accs[tag]:.3f} at epoch {best_epochs[tag]} \n best_stats: {best_stats[tag]}')
 
@@ -186,10 +186,6 @@ def main():
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     logging.info(f'Total training time: {total_time_str}')
-
-    save_file = save_path / 'checkpoints' / f'last.pth'
-    save_model(model, optimizer, opt, opt.epochs, save_file)
-
 
 if __name__ == '__main__':
     main()

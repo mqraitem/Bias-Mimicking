@@ -178,7 +178,7 @@ def main():
 
     model, criterion = set_model(opt, train_loader.dataset)
 
-    decay_epochs = [50, 100, 150]
+    decay_epochs = [opt.epochs//4, opt.epochs//2, opt.epochs//1.333]
 
     optimizer = optim.SGD(model.parameters(), lr=opt.lr, momentum =0.9, weight_decay=opt.weight_decay)
     scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=decay_epochs, gamma=0.1)
@@ -214,18 +214,12 @@ def main():
                 best_epochs[tag] = epoch
                 best_stats[tag] = pretty_dict(**{f'best_{tag}_{k}': v for k, v in stats.items()})
 
-                save_file = save_path / 'checkpoints' / f'best_{tag}.pth'
-                # save_model(model, optimizer, opt, epoch, save_file)
             logging.info(
                 f'[{epoch} / {opt.epochs}] best {tag} accuracy: {best_accs[tag]:.3f} at epoch {best_epochs[tag]} \n best_stats: {best_stats[tag]}')
 
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     logging.info(f'Total training time: {total_time_str}')
-
-    save_file = save_path / 'checkpoints' / f'last.pth'
-    # save_model(model, optimizer, opt, opt.epochs, save_file)
-
 
 if __name__ == '__main__':
     main()

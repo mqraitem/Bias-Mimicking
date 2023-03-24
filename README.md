@@ -50,3 +50,15 @@ where mode refers to whether the distribution is left as is/undersampled/upweigh
 ## Acknowledgements
 
 The code for non sampling methods builds on [this work](https://github.com/grayhong/bias-contrastive-learning). Furthermore, the code for GroupDRO is obtained from [this work](https://github.com/kohpangwei/group_DRO)
+
+## Citation 
+
+If you find this repository useful please give it a star and cite as follows! :) :
+```
+    @article{qraitem2022bias,
+    title={Bias Mimicking: A Simple Sampling Approach for Bias Mitigation},
+    author={Qraitem, Maan and Saenko, Kate and Plummer, Bryan A},
+    journal={arXiv preprint arXiv:2209.15605},
+    year={2022}
+    }
+```

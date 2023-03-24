@@ -28,7 +28,7 @@ def parse_option():
     parser.add_argument('--gpu', type=int, default=0)
     parser.add_argument('--task', type=str, default='makeup')
 
-    parser.add_argument('--epochs', type=int, default=40)
+    parser.add_argument('--epochs', type=int, default=10)
     parser.add_argument('--seed', type=int, default=1)
 
     parser.add_argument('--bs', type=int, default=128, help='batch_size')
@@ -99,17 +99,6 @@ def main():
     exp_name = f'os-celeba_{opt.task}-{opt.exp_name}-lr{opt.lr}-bs{opt.bs}-seed{opt.seed}'
     opt.exp_name = exp_name
     
-    if opt.task == "makeup":
-        opt.epochs = 40
-    elif opt.task == "blonde":
-        opt.epochs = 10
-    elif opt.task == "black":
-        opt.epochs = 10
-    elif opt.task == "smiling":
-        opt.epochs = 10
-    else:
-        raise AttributeError()
-
     output_dir = f'exp_results/{exp_name}'
     save_path = Path(output_dir)
     save_path.mkdir(parents=True, exist_ok=True)
@@ -174,8 +163,7 @@ def main():
             stats[f'{key}/acc'] = accs.item()
             stats[f'{key}/acc_unbiased'] = torch.mean(valid_attrwise_accs).item() * 100
             stats[f'{key}/diff'] = diff.item() * 100
-            
-            
+
             eye_tsr = train_loader.dataset.eye_tsr
             
             stats[f'{key}/acc_skew'] = valid_attrwise_accs[eye_tsr > 0.0].mean().item() * 100
@@ -188,17 +176,12 @@ def main():
                 best_epochs[tag] = epoch
                 best_stats[tag] = pretty_dict(**{f'best_{tag}_{k}': v for k, v in stats.items()})
 
-                save_file = save_path / 'checkpoints' / f'best_{tag}.pth'
-                save_model(model, optimizer, opt, epoch, save_file)
             logging.info(
                 f'[{epoch} / {opt.epochs}] best {tag} accuracy: {best_accs[tag]:.3f} at epoch {best_epochs[tag]} \n best_stats: {best_stats[tag]}')
 
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     logging.info(f'Total training time: {total_time_str}')
-
-    save_file = save_path / 'checkpoints' / f'last.pth'
-    save_model(model, optimizer, opt, opt.epochs, save_file)
 
 
 if __name__ == '__main__':

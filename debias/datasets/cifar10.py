@@ -44,6 +44,8 @@ class BiasedCifar10(SamplingDataset):
 
         self.samples_check = torch.zeros((len(self.images))) 
         self.set_main_data()
+        self.eye_tsr = self.get_eye_tsr()
+
 
         if under_sample == 'bin' and split == 'train': 
             self.bias_mimick()

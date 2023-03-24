@@ -192,7 +192,7 @@ def main():
         bias_attr=opt.task,
         split='train',
         aug=False, 
-        under_sample = 'bin')
+        sampling = 'bin')
     
     val_loaders = {}
     val_loaders['valid'] = get_utk_face(
@@ -255,8 +255,6 @@ def main():
                 best_epochs[tag] = epoch
                 best_stats[tag] = pretty_dict(**{f'best_{tag}_{k}': v for k, v in stats.items()})
 
-                save_file = save_path / 'checkpoints' / f'best_{tag}.pth'
-                # save_model(model, optimizer, opt, epoch, save_file)
             logging.info(
                 f'[{epoch} / {opt.epochs}] best {tag} accuracy: {best_accs[tag]:.3f} at epoch {best_epochs[tag]} \n best_stats: {best_stats[tag]}')
 

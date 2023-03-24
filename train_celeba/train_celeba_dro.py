@@ -31,6 +31,7 @@ def parse_option():
     parser.add_argument('--bs', type=int, default=128, help='batch_size')
     parser.add_argument('--lr', type=float, default=1e-3)
     
+    #Hyperparameters
     parser.add_argument('--robust', default=False, action='store_true')
     parser.add_argument('--alpha', type=float, default=0.2)
     parser.add_argument('--generalization_adjustment', default="0.0")
@@ -126,17 +127,6 @@ def main():
 
     exp_name = f'dro-celeba_{opt.task}-{opt.exp_name}-lr{opt.lr}-bs{opt.bs}-seed{opt.seed}'
     opt.exp_name = exp_name
-    
-    if opt.task == "makeup":
-        opt.epochs = 40
-    elif opt.task == "blonde":
-        opt.epochs = 10
-    elif opt.task == "black":
-        opt.epochs = 10
-    elif opt.task == "smiling":
-        opt.epochs = 10
-    else:
-        raise AttributeError()
 
     output_dir = f'exp_results/{exp_name}'
     save_path = Path(output_dir)
@@ -211,23 +201,17 @@ def main():
         logging.info(f'[{epoch} / {opt.epochs}] {valid_attrwise_accs} {stats}')
         for tag in val_loaders.keys():
             
-            #BAM Change to acc_skew to align with GroupDRO implementation. 
-            if stats[f'{tag}/acc_skew'] > best_accs[tag]:
-                best_accs[tag] = stats[f'{tag}/acc_skew']
+            if stats[f'{tag}/acc_unbiased'] > best_accs[tag]:
+                best_accs[tag] = stats[f'{tag}/acc_unbiased']
                 best_epochs[tag] = epoch
                 best_stats[tag] = pretty_dict(**{f'best_{tag}_{k}': v for k, v in stats.items()})
 
-                save_file = save_path / 'checkpoints' / f'best_{tag}.pth'
-                save_model(model, optimizer, opt, epoch, save_file)
             logging.info(
                 f'[{epoch} / {opt.epochs}] best {tag} accuracy: {best_accs[tag]:.3f} at epoch {best_epochs[tag]} \n best_stats: {best_stats[tag]}')
 
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
     logging.info(f'Total training time: {total_time_str}')
-
-    save_file = save_path / 'checkpoints' / f'last.pth'
-    save_model(model, optimizer, opt, opt.epochs, save_file)
 
 if __name__ == '__main__':
     main()

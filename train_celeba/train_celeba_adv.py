@@ -119,17 +119,6 @@ def main():
 
     exp_name = f'adv-celeba_{opt.task}-{opt.exp_name}-lr{opt.lr}-bs{opt.bs}-seed{opt.seed}'
     opt.exp_name = exp_name
-    
-    if opt.task == "makeup":
-        opt.epochs = 40
-    elif opt.task == "blonde":
-        opt.epochs = 10
-    elif opt.task == "black":
-        opt.epochs = 10
-    elif opt.task == "smiling":
-        opt.epochs = 10
-    else:
-        raise AttributeError()
 
     output_dir = f'exp_results/{exp_name}'
     save_path = Path(output_dir)

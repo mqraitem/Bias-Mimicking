@@ -36,7 +36,7 @@ class UTKFace:
 class BiasedUTKFace(SamplingDataset):
     def __init__(self, root, transform, split,
                  bias_attr='race', bias_rate=0.9,
-                 under_sample=False, 
+                 sampling=False, 
                  diff_analysis=0.0, 
                  **kwargs):
         self.root = Path(root) / 'images'
@@ -102,16 +102,16 @@ class BiasedUTKFace(SamplingDataset):
         print("Distribution Before Sampling: ")
         self.print_new_distro()
 
-        if split == 'train' and under_sample == 'bin': 
+        if split == 'train' and sampling == 'bin': 
             self.bias_mimick()
 
-        if split == 'train' and under_sample == 'analysis':
+        if split == 'train' and sampling == 'analysis':
             self.under_sample_bin(diff=diff_analysis) 
                             
-        if split == 'train' and under_sample == 'ce': 
+        if split == 'train' and sampling == 'ce': 
             self.under_sample_ce() 
         
-        if split == 'train' and under_sample == 'os': 
+        if split == 'train' and sampling == 'os': 
             self.over_sample_ce() 
 
         if split == 'train':
@@ -227,7 +227,7 @@ def get_utk_face(root, batch_size, split, bias_attr='race', bias_rate=0.9, num_w
                   two_crop=False, 
                   ratio=0, 
                   given_y=True,
-                  under_sample=False, 
+                  sampling=False, 
                   repair=False, 
                   diff_analysis=0.0, 
                   reweight_sampler=False):
@@ -266,7 +266,7 @@ def get_utk_face(root, batch_size, split, bias_attr='race', bias_rate=0.9, num_w
     if two_crop:
         transform = TwoCropTransform(transform)
 
-    dataset = BiasedUTKFace(root, transform=transform, split=split, bias_rate=bias_rate, bias_attr=bias_attr, under_sample=under_sample, diff_analysis=diff_analysis)
+    dataset = BiasedUTKFace(root, transform=transform, split=split, bias_rate=bias_rate, bias_attr=bias_attr, sampling=sampling, diff_analysis=diff_analysis)
 
     def clip_max_ratio(score):
         upper_bd = score.min() * ratio
