@@ -55,10 +55,11 @@ The code for non sampling methods builds on [this work](https://github.com/grayh
 
 If you find this repository useful please give it a star and cite as follows! :) :
 ```
-    @article{qraitem2022bias,
-    title={Bias Mimicking: A Simple Sampling Approach for Bias Mitigation},
-    author={Qraitem, Maan and Saenko, Kate and Plummer, Bryan A},
-    journal={arXiv preprint arXiv:2209.15605},
-    year={2022}
+    @inproceedings{qraitem2023bias,
+      title={Bias Mimicking: A Simple Sampling Approach for Bias Mitigation},
+      author={Qraitem, Maan and Saenko, Kate and Plummer, Bryan A},
+      booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+      pages={20311--20320},
+      year={2023}
     }
 ```
